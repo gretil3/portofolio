@@ -22,9 +22,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "David Sinambela — Software Engineer",
+  title: "David Sinambela — Computer Science Student",
   description:
-    "Building clean, high-performance systems from the ground up. Portfolio of David Sinambela, full-stack software engineer.",
+    "Hi, I'm David Sinambela. Computer Science Student & Wanna be AI Developer. Still learning a lot about Deep Learning AI, and practical tech-building.",
 };
 
 export const viewport: Viewport = {

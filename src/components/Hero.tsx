@@ -7,9 +7,35 @@ import Fireflies from "@/components/forest/Fireflies";
 import Treeline from "@/components/forest/Treeline";
 import { TREELINES } from "@/lib/forest";
 
-const HEADLINE = ["Building", "clean,", "high-performance", "systems", "from", "the", "ground", "up."];
-const HIGHLIGHT_FROM = 6;
+const GREETING = ["Hi,", "I'm", "David", "Sinambela."];
+const NAME_FROM = 2;
+const ROLE = ["Computer", "Science", "Student", "&", "Wanna", "be", "AI", "Developer."];
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+interface RevealWordsProps {
+  words: string[];
+  startIndex?: number;
+  highlightFrom?: number;
+}
+
+function RevealWords({ words, startIndex = 0, highlightFrom = words.length }: RevealWordsProps) {
+  return words.map((word, i) => (
+    <Fragment key={`${i}-${word}`}>
+      <span aria-hidden className="inline-block overflow-hidden pb-[0.12em]">
+        <motion.span
+          initial={{ y: "105%" }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.8, delay: 0.15 + (startIndex + i) * 0.06, ease: EASE }}
+          className={`inline-block ${
+            i >= highlightFrom ? "bg-linear-to-r from-fern to-firefly bg-clip-text text-transparent" : ""
+          }`}
+        >
+          {word}
+        </motion.span>
+      </span>{" "}
+    </Fragment>
+  ));
+}
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -106,46 +132,35 @@ export default function Hero() {
           transition={{ duration: 0.5 }}
           className="mb-6 font-mono text-sm tracking-wide text-moss"
         >
-          {"// hello, world"}
+          {"// Less Decision, more focus"}
         </motion.p>
 
         <h1
-          aria-label={HEADLINE.join(" ")}
-          className="max-w-4xl font-display text-5xl font-medium leading-[1.04] tracking-tight text-text-high sm:text-6xl lg:text-7xl"
+          aria-label={`${GREETING.join(" ")} ${ROLE.join(" ")}`}
+          className="max-w-5xl font-display font-medium tracking-tight text-text-high"
         >
-          {HEADLINE.map((word, i) => (
-            <Fragment key={`${i}-${word}`}>
-              <span aria-hidden className="inline-block overflow-hidden pb-[0.12em]">
-                <motion.span
-                  initial={{ y: "105%" }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.15 + i * 0.06, ease: EASE }}
-                  className={`inline-block ${
-                    i >= HIGHLIGHT_FROM
-                      ? "bg-linear-to-r from-fern to-firefly bg-clip-text text-transparent"
-                      : ""
-                  }`}
-                >
-                  {word}
-                </motion.span>
-              </span>{" "}
-            </Fragment>
-          ))}
+          <span className="block text-5xl leading-[1.04] sm:text-6xl lg:text-7xl">
+            <RevealWords words={GREETING} highlightFrom={NAME_FROM} />
+          </span>
+          <span className="mt-4 block text-2xl leading-snug text-text-high/85 sm:text-3xl lg:text-4xl">
+            <RevealWords words={ROLE} startIndex={GREETING.length} />
+          </span>
         </h1>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.65 }}
-          className="mt-6 max-w-xl text-lg leading-relaxed text-text-muted"
+          transition={{ duration: 0.6, delay: 0.95 }}
+          className="mt-6 max-w-2xl text-lg leading-relaxed text-text-muted"
         >
-          I&apos;m David Sinambela.
+          Still learning a lot about Deep Learning AI, and practical{" "}
+          <span className="whitespace-nowrap">tech-building.</span>
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.75 }}
+          transition={{ duration: 0.6, delay: 1.05 }}
           className="mt-10 flex flex-wrap items-center gap-4"
         >
           <a
