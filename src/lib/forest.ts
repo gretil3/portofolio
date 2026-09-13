@@ -1,5 +1,6 @@
 export const FOREST_SECTIONS = [
   { id: "top", label: "Canopy", depth: "+30m" },
+  { id: "skills", label: "Undergrowth", depth: "+20m" },
   { id: "projects", label: "Understory", depth: "+12m" },
   { id: "archive", label: "Forest floor", depth: "0m" },
   { id: "contact", label: "Roots", depth: "-3m" },

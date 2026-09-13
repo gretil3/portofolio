@@ -9,7 +9,7 @@ import { TREELINES } from "@/lib/forest";
 
 const GREETING = ["Hi,", "I'm", "David", "Sinambela."];
 const NAME_FROM = 2;
-const ROLE = ["Computer", "Science", "Student", "&", "Wanna", "be", "AI", "Developer."];
+const ROLE = ["Computer", "Science", "Student", "&", "Aspiring", "AI", "Developer."];
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 interface RevealWordsProps {
@@ -153,15 +153,29 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.95 }}
           className="mt-6 max-w-2xl text-lg leading-relaxed text-text-muted"
         >
-          Still learning a lot about Deep Learning AI, and practical{" "}
-          <span className="whitespace-nowrap">tech-building.</span>
+          Still learning Deep Learning &amp; AI — and how to actually ship it.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.05 }}
-          className="mt-10 flex flex-wrap items-center gap-4"
+          className="mt-6"
+        >
+          <span className="inline-flex items-center gap-2 rounded-full border border-fern/20 bg-fern/5 px-3 py-1 font-mono text-xs text-moss">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-firefly/60 motion-reduce:hidden" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-firefly" />
+            </span>
+            Open to internships
+          </span>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.15 }}
+          className="mt-8 flex flex-wrap items-center gap-4"
         >
           <a
             href="#projects"
@@ -174,9 +188,9 @@ export default function Hero() {
             href="https://github.com/gretil3"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface/60 px-6 py-3 font-medium text-text-high backdrop-blur transition hover:border-fern/50 hover:bg-surface-hover"
+            className="inline-flex items-center gap-2 rounded-full border border-fern/30 bg-fern/10 px-6 py-3 font-medium text-text-high backdrop-blur transition hover:border-fern/50 hover:bg-fern/15"
           >
-            <Terminal className="h-4 w-4" />
+            <Terminal className="h-4 w-4 text-fern" />
             GitHub
           </a>
         </motion.div>

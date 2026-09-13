@@ -7,6 +7,7 @@ import { useActiveSection } from "@/hooks/useActiveSection";
 import { SECTION_IDS } from "@/lib/forest";
 
 const links = [
+  { label: "Skills", id: "skills" },
   { label: "Work", id: "projects" },
   { label: "Archive", id: "archive" },
   { label: "Contact", id: "contact" },
