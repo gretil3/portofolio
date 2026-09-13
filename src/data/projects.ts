@@ -2,7 +2,6 @@ import type { ArchiveProjectProps, ProjectProps } from "@/types/project";
 
 export const featuredProjects: ProjectProps[] = [
   {
-    index: "01 // FEATURED",
     title: "NBA Rookie Longevity Predictor",
     description:
       "An interactive sports-analytics app that predicts whether an NBA rookie's career will last 5+ years, straight from their rookie-season box score stats. Built two models end-to-end through a shared 12-step pipeline — preprocessing, stratified 5-fold tuning, evaluation — to see where a linear model and a tree-based model agree and disagree on the same players.",
@@ -13,10 +12,10 @@ export const featuredProjects: ProjectProps[] = [
     ],
     techStack: ["Python", "scikit-learn", "Streamlit", "pandas", "Matplotlib"],
     image: "/projects/nba-rookie-predictor.svg",
+    liveUrl: "https://predicting-nba-rookie-career-longev.vercel.app/",
     sourceUrl: "https://github.com/gretil3/NBA-Rookie-Predictor",
   },
   {
-    index: "02 // FEATURED",
     title: "Bone Fracture Detector",
     description:
       "A web app that flags bone fractures in X-ray images using classical computer vision instead of a neural network — a deliberate choice to keep the result lightweight, fast on CPU, and easy to explain feature-by-feature.",
@@ -27,10 +26,10 @@ export const featuredProjects: ProjectProps[] = [
     ],
     techStack: ["Python", "OpenCV", "scikit-learn", "Streamlit"],
     image: "/projects/bone-fracture-detector.svg",
+    liveUrl: "https://bone-fracture-detection4.streamlit.app/",
     sourceUrl: "https://github.com/gretil3/Bone-Fracture-Detection-Using-OpenCV",
   },
   {
-    index: "03 // FEATURED",
     title: "CivicEye",
     description:
       "A role-based civic engagement platform connecting volunteers with municipal and organizational staff. Volunteers report issues, claim field tasks, and earn redeemable points; staff triage reports, assign tasks, and track community activity through analytics — originally built as a team project for a Software Engineering course.",
@@ -41,6 +40,7 @@ export const featuredProjects: ProjectProps[] = [
     ],
     techStack: ["React", "TypeScript", "Vite", "Tailwind CSS", "InsForge"],
     image: "/projects/civiceye.svg",
+    liveUrl: "https://civic-eye-azure.vercel.app/",
     sourceUrl: "https://github.com/gretil3/CivicEye-Updated",
   },
 ];
@@ -63,6 +63,7 @@ export const archiveProjects: ArchiveProjectProps[] = [
     title: "Market Sentiment Analyser",
     tech: "Python / DistilBERT / Streamlit",
     url: "https://github.com/gretil3/Sentiment-Market-Analysis-NLP",
+    demoUrl: "https://twitter-sentiment-nlp-tfidf.streamlit.app/",
   },
   {
     year: "2026",

@@ -1,5 +1,4 @@
 export interface ProjectProps {
-  index: string;
   title: string;
   description: string;
   highlights: string[];
@@ -14,4 +13,5 @@ export interface ArchiveProjectProps {
   title: string;
   tech: string;
   url?: string;
+  demoUrl?: string;
 }

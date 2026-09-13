@@ -1,31 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f171e;
-  --background-alt: #121b16;
-  --surface: #18222a;
-  --surface-hover: #1c2830;
-  --border-accent: rgba(6, 78, 59, 0.4);
-  --accent: #2e8b57;
-  --accent-soft: #4a7c59;
+  --background: #07100b;
+  --surface: #0e1a14;
+  --surface-hover: #13231b;
+  --line: rgba(163, 230, 186, 0.1);
+  --line-strong: rgba(163, 230, 186, 0.18);
+  --fern: #6fcf8f;
+  --moss: #7fa98a;
+  --firefly: #d9f99d;
   --amber: #e0a96d;
-  --text-high: #f4f6f0;
-  --text-muted: #94a3b8;
+  --soil: #0d0b07;
+  --text-high: #eef3ea;
+  --text-muted: #9db3a4;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-background-alt: var(--background-alt);
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
-  --color-border-accent: var(--border-accent);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fern: var(--fern);
+  --color-moss: var(--moss);
+  --color-firefly: var(--firefly);
   --color-amber: var(--amber);
+  --color-soil: var(--soil);
   --color-text-high: var(--text-high);
   --color-text-muted: var(--text-muted);
 
-  --font-sans: var(--font-space-grotesk);
+  --font-display: var(--font-fraunces);
   --font-body: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
 }
@@ -33,24 +37,74 @@
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
+  scrollbar-color: #1f3a2b var(--background);
+  scrollbar-width: thin;
 }
 
 body {
-  background: linear-gradient(180deg, var(--background) 0%, var(--background-alt) 100%);
+  background-color: var(--background);
   color: var(--text-high);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Keeps anchor jumps clear of the fixed navbar. */
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
 ::selection {
-  background: rgba(46, 139, 87, 0.35);
+  background: rgba(217, 249, 157, 0.25);
   color: var(--text-high);
 }
 
-/* subtle noise overlay for ambient texture */
 .bg-noise {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
-.text-balance {
-  text-wrap: balance;
+.forest-sky {
+  background:
+    radial-gradient(70% 50% at 80% 12%, rgba(217, 249, 157, 0.07), transparent 60%),
+    linear-gradient(180deg, #06120f 0%, #0b221c 40%, #143629 72%, #173d2f 100%);
+}
+
+@keyframes mist-drift {
+  from {
+    transform: translateX(-6%);
+  }
+  to {
+    transform: translateX(6%);
+  }
+}
+
+.mist {
+  animation: mist-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes descend {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(200%);
+  }
+}
+
+.animate-descend {
+  animation: descend 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .mist,
+  .animate-descend {
+    animation: none;
+  }
+
+  .roots path {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
 }

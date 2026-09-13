@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  axes: ["opsz", "SOFT"],
 });
 
 const inter = Inter({
@@ -26,14 +27,18 @@ export const metadata: Metadata = {
     "Building clean, high-performance systems from the ground up. Portfolio of David Sinambela, full-stack software engineer.",
 };
 
+export const viewport: Viewport = {
+  themeColor: "#07100b",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background bg-noise">
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );
