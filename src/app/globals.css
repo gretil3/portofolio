@@ -32,6 +32,7 @@
   --font-display: var(--font-fraunces);
   --font-body: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
+  --font-pixel: var(--font-pixelify);
 }
 
 html {
@@ -93,13 +94,25 @@ section[id] {
   animation: descend 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
+/* The "more text" arrow at the end of a game dialogue box. */
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s steps(1, end) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
   .mist,
-  .animate-descend {
+  .animate-descend,
+  .animate-blink {
     animation: none;
   }
 

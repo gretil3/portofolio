@@ -16,8 +16,13 @@ export function getForestSection(id: ForestSectionId) {
 
 const VIEW_WIDTH = 1440;
 const VIEW_HEIGHT = 320;
+// Extra tree/ground coverage past [0, VIEW_WIDTH] on both sides so wide
+// viewports (where "slice" scaling reveals more than the nominal width)
+// never expose blank canvas or a hard-sheared tree at the frame edge.
+const BLEED = VIEW_WIDTH * 0.18;
+const DOMAIN_WIDTH = VIEW_WIDTH + BLEED * 2;
 
-export const TREELINE_VIEWBOX = `0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`;
+export const TREELINE_VIEWBOX = `${-BLEED} 0 ${DOMAIN_WIDTH} ${VIEW_HEIGHT}`;
 
 // Seeded so server and client render identical paths (no hydration mismatch).
 function mulberry32(seed: number) {
@@ -49,15 +54,19 @@ function pinePath(x: number, h: number, w: number) {
 
 function treelinePath(seed: number, count: number, minHeight: number, maxHeight: number) {
   const rand = mulberry32(seed);
-  const step = VIEW_WIDTH / count;
+  // Scale tree count up so density (trees per unit width) matches the
+  // narrower [0, VIEW_WIDTH] pattern this replaced — otherwise the bled
+  // margins would render as sparse gaps instead of continuous treeline.
+  const paddedCount = Math.round((count * DOMAIN_WIDTH) / VIEW_WIDTH);
+  const step = DOMAIN_WIDTH / paddedCount;
   let d = "";
-  for (let i = 0; i <= count; i++) {
-    const x = i * step + (rand() - 0.5) * step * 0.7;
+  for (let i = 0; i <= paddedCount; i++) {
+    const x = -BLEED + i * step + (rand() - 0.5) * step * 0.7;
     const h = minHeight + rand() * (maxHeight - minHeight);
     const w = h * (0.4 + rand() * 0.16);
     d += pinePath(x, h, w);
   }
-  return `${d}M0 ${VIEW_HEIGHT - 4}H${VIEW_WIDTH}V${VIEW_HEIGHT}H0Z`;
+  return `${d}M${-BLEED} ${VIEW_HEIGHT - 4}H${VIEW_WIDTH + BLEED}V${VIEW_HEIGHT}H${-BLEED}Z`;
 }
 
 export const TREELINES = {
