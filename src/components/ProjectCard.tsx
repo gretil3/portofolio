@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -8,8 +9,18 @@ import {
   useReducedMotion,
   useSpring,
 } from "framer-motion";
-import { ArrowUpRight, Leaf, Terminal } from "lucide-react";
+import {
+  ArrowUpRight,
+  ExternalLink,
+  Leaf,
+  MousePointerClick,
+  Sprout,
+  Terminal,
+} from "lucide-react";
 import type { ProjectProps } from "@/types/project";
+import BrowserBar from "./BrowserBar";
+import LiveDemoDialog from "./LiveDemoDialog";
+import LivePreview from "./LivePreview";
 
 interface ProjectCardProps {
   project: ProjectProps;
@@ -19,9 +30,23 @@ interface ProjectCardProps {
 
 const MAX_TILT_DEG = 7;
 
+const pillClass =
+  "inline-flex items-center gap-2 rounded-full bg-firefly px-5 py-2.5 text-sm font-semibold text-background shadow-lg shadow-black/30";
+
 export default function ProjectCard({ project, number, reversed = false }: ProjectCardProps) {
-  const { title, description, highlights, techStack, image, liveUrl, sourceUrl } = project;
+  const {
+    title,
+    description,
+    disclaimer,
+    highlights,
+    techStack,
+    image,
+    embedUrl,
+    liveUrl,
+    sourceUrl,
+  } = project;
   const reduceMotion = useReducedMotion();
+  const [demoOpen, setDemoOpen] = useState(false);
 
   const tiltX = useMotionValue(0);
   const tiltY = useMotionValue(0);
@@ -52,40 +77,97 @@ export default function ProjectCard({ project, number, reversed = false }: Proje
     tiltY.set(0);
   }
 
-  const frameClass = "relative block aspect-video overflow-hidden rounded-[15px] bg-surface";
-  const frameContent = (
-    <>
-      <Image
-        src={image}
-        alt={`${title} preview`}
-        fill
-        sizes="(min-width: 1024px) 50vw, 100vw"
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-      />
-      <motion.div
-        aria-hidden
-        style={{ background: spotlight }}
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      />
-      {previewUrl && (
-        <div className="absolute inset-0 flex items-center justify-center bg-background/0 opacity-0 transition duration-300 group-focus-within:bg-background/55 group-focus-within:opacity-100 group-hover:bg-background/55 group-hover:opacity-100">
-          <span className="inline-flex items-center gap-2 rounded-full bg-firefly px-5 py-2.5 text-sm font-semibold text-background shadow-lg shadow-black/30">
-            {previewLabel}
-            <ArrowUpRight className="h-4 w-4" />
-          </span>
-        </div>
-      )}
-      {/* Curtain retracts upward so the preview appears to grow from the ground. */}
-      <motion.div
-        aria-hidden
-        initial={{ scaleY: 1 }}
-        whileInView={{ scaleY: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.9, ease: [0.65, 0, 0.35, 1], delay: 0.1 }}
-        className="pointer-events-none absolute inset-0 z-10 origin-top bg-surface"
-      />
-    </>
+  const spotlightLayer = (
+    <motion.div
+      aria-hidden
+      style={{ background: spotlight }}
+      className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+    />
   );
+  // Curtain retracts upward so the preview appears to grow from the ground.
+  const curtain = (
+    <motion.div
+      aria-hidden
+      initial={{ scaleY: 1 }}
+      whileInView={{ scaleY: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.9, ease: [0.65, 0, 0.35, 1], delay: 0.1 }}
+      className="pointer-events-none absolute inset-0 z-10 origin-top bg-surface"
+    />
+  );
+
+  let frame: React.ReactNode;
+  if (embedUrl) {
+    frame = (
+      <div className="relative overflow-hidden rounded-[15px] bg-surface">
+        <BrowserBar url={embedUrl}>
+          {liveUrl && (
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${title} in a new tab`}
+              className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-hover hover:text-text-high"
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </BrowserBar>
+        <div className="relative aspect-video overflow-hidden">
+          <LivePreview url={embedUrl} title={title} poster={image} />
+          {spotlightLayer}
+          <button
+            type="button"
+            onClick={() => setDemoOpen(true)}
+            aria-label={`Try ${title} live`}
+            className="absolute inset-0 flex items-end justify-center bg-background/0 pb-5 opacity-0 transition duration-300 hover:bg-background/30 hover:opacity-100 focus-visible:bg-background/30 focus-visible:opacity-100 focus-visible:outline-none [@media(hover:none)]:opacity-100"
+          >
+            <span className={pillClass}>
+              Try it live
+              <MousePointerClick className="h-4 w-4" />
+            </span>
+          </button>
+        </div>
+        {curtain}
+      </div>
+    );
+  } else {
+    const frameClass = "relative block aspect-video overflow-hidden rounded-[15px] bg-surface";
+    const frameContent = (
+      <>
+        <Image
+          src={image}
+          alt={`${title} preview`}
+          fill
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        />
+        {spotlightLayer}
+        {previewUrl && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/0 opacity-0 transition duration-300 group-focus-within:bg-background/55 group-focus-within:opacity-100 group-hover:bg-background/55 group-hover:opacity-100">
+            <span className={pillClass}>
+              {previewLabel}
+              <ArrowUpRight className="h-4 w-4" />
+            </span>
+          </div>
+        )}
+        {curtain}
+      </>
+    );
+    frame = previewUrl ? (
+      <a
+        href={previewUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${previewLabel}: ${title}`}
+        className={frameClass}
+      >
+        {frameContent}
+      </a>
+    ) : (
+      <div className={frameClass}>{frameContent}</div>
+    );
+  }
 
   return (
     <motion.article
@@ -107,19 +189,7 @@ export default function ProjectCard({ project, number, reversed = false }: Proje
           style={{ background: rim }}
           className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         />
-        {previewUrl ? (
-          <a
-            href={previewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${previewLabel}: ${title}`}
-            className={frameClass}
-          >
-            {frameContent}
-          </a>
-        ) : (
-          <div className={frameClass}>{frameContent}</div>
-        )}
+        {frame}
       </motion.div>
 
       <div className="relative">
@@ -147,6 +217,12 @@ export default function ProjectCard({ project, number, reversed = false }: Proje
           )}
         </h3>
         <p className="mb-6 leading-relaxed text-text-muted">{description}</p>
+        {disclaimer && (
+          <p className="-mt-2 mb-6 flex gap-3 rounded-lg border border-amber/25 bg-amber/5 px-4 py-3 text-sm leading-relaxed text-amber">
+            <Sprout aria-hidden className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{disclaimer}</span>
+          </p>
+        )}
 
         <ul className="mb-7 space-y-3">
           {highlights.map((point) => (
@@ -193,6 +269,16 @@ export default function ProjectCard({ project, number, reversed = false }: Proje
           )}
         </div>
       </div>
+
+      {embedUrl && (
+        <LiveDemoDialog
+          open={demoOpen}
+          onClose={() => setDemoOpen(false)}
+          title={title}
+          embedUrl={embedUrl}
+          liveUrl={liveUrl}
+        />
+      )}
     </motion.article>
   );
 }
